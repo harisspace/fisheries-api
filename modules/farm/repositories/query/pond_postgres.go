@@ -28,7 +28,7 @@ func (q *PondPostgres) FindOne(ctx context.Context, payload map[string]interface
 
 		var pond model.Pond
 
-		result := q.db.Model(&pond).Where(payload).First(&pond)
+		result := q.db.Preload("Farm").Model(&pond).Where(payload).First(&pond)
 		if result.Error != nil {
 			output <- utils.Result{Error: result}
 		}
