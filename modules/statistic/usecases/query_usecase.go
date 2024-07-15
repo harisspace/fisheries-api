@@ -38,13 +38,6 @@ func (q *StatisticQueryUsecasePostgres) GetStatisticByUserAgent(ctx context.Cont
 		return result
 	}
 
-	// statisticData := queryRes.Data.([]model.Statistic)
-	// if len(statisticData) > 0 {
-	// 	for _, v := range(statisticData) {
-
-	// 	}
-	// }
-
 	result = queryRes
 	return result
 }
