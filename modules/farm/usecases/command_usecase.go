@@ -75,7 +75,15 @@ func (c *FarmCommandUsecasePostgres) UpdateFarm(ctx context.Context, payload *mo
 
 	queryRes := <-c.farmQueryPostgres.FindOne(ctx, map[string]interface{}{"farm_id": farmId, "is_deleted": false})
 	if queryRes.Data != nil {
-		// Farm exist and update
+		// Check is farm with that name already exist
+		queryRes = <-c.farmQueryPostgres.FindOne(ctx, map[string]interface{}{"name": name, "is_deleted": false})
+		if queryRes.Data != nil {
+			errObj := httpError.NewConflict()
+			errObj.Message = "Farm with that name already exist"
+			result.Error = errObj
+			return result
+		}
+		// Update farm
 		queryRes = <-c.farmCommandPostgres.UpdateOne(ctx, map[string]interface{}{"farm_id": farmId}, map[string]interface{}{"name": name, "updated_at": time.Now()})
 		if queryRes.Error != nil {
 			errObj := httpError.NewConflict()
@@ -179,7 +187,15 @@ func (c *FarmCommandUsecasePostgres) UpdatePond(ctx context.Context, payload *mo
 
 	queryRes := <-c.pondQueryPostgres.FindOne(ctx, map[string]interface{}{"pond_id": pondId})
 	if queryRes.Data != nil {
-		// Pond exist and update
+		// Check is pond name exist
+		queryRes = <-c.pondQueryPostgres.FindOne(ctx, map[string]interface{}{"name": name})
+		if queryRes.Data != nil {
+			errObj := httpError.NewConflict()
+			errObj.Message = "Pond with that name already exist"
+			result.Error = errObj
+			return result
+		}
+		// Updata pond
 		queryRes = <-c.pondCommandPostgres.UpdateOne(ctx, map[string]interface{}{"pond_id": pondId}, map[string]interface{}{"name": name, "updated_at": time.Now()})
 		if queryRes.Error != nil {
 			errObj := httpError.NewConflict()

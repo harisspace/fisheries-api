@@ -21,8 +21,7 @@ type farmHTTPHandler struct {
 }
 
 func NewFarmHandler() *farmHTTPHandler {
-	// DB initialize
-	// TODO create another approach
+	// Get DB
 	postgres := database.GetDB()
 	// Repositories
 	farmCommandPostgres := command.NewFarmCommandPostgres(postgres)
@@ -139,7 +138,6 @@ func (f *farmHTTPHandler) UpdateFarm(c echo.Context) error {
 		return utils.ResponseError(result.Error, c)
 	}
 
-	// TODO: handle this is created or updated
 	return utils.ResponseSuccess(result.Data, "Farm updated", http.StatusOK, c)
 }
 
@@ -248,7 +246,6 @@ func (p *farmHTTPHandler) UpdatePond(c echo.Context) error {
 		return utils.ResponseError(result.Error, c)
 	}
 
-	// TODO: handle this is created or updated
 	return utils.ResponseSuccess(result.Data, "Pond updated", http.StatusOK, c)
 }
 

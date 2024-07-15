@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+   db:
+    container_name: fisheries-api-container
+    image: "postgres"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+    # Exposed port to default port for postgres
+      - '5433:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local

@@ -14,7 +14,6 @@ type Pond struct {
 }
 
 // ========= COMMAND =========
-// TODO: handle type validation
 type CreatePond struct {
 	Name   string `json:"name" validate:"required"`
 	FarmId string `json:"farm_id" validate:"required"`
@@ -26,7 +25,7 @@ type GetPondById struct {
 
 type UpdatePond struct {
 	PondId string `json:"pond_id"`
-	Name   string `json:"name"`
+	Name   string `json:"name" validate:"required"`
 	FarmId string `json:"farm_id"`
 }
 

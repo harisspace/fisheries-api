@@ -39,7 +39,7 @@ type GetFarmById struct {
 
 type UpdateFarm struct {
 	FarmId string `json:"farm_id"`
-	Name   string `json:"name"`
+	Name   string `json:"name" validate:"required"`
 }
 
 type DeleteFarm struct {

@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -13,28 +11,8 @@ import (
 	httpHandlerFarm "github.com/harisspace/fisheries-api/modules/farm/handlers"
 	httpHandlerStatistic "github.com/harisspace/fisheries-api/modules/statistic/handlers"
 	"github.com/harisspace/fisheries-api/pkg/database"
-	httpError "github.com/harisspace/fisheries-api/pkg/http_error"
+	"github.com/harisspace/fisheries-api/pkg/utils"
 )
-
-type CustomValidator struct {
-	validate *validator.Validate
-}
-
-func (cv *CustomValidator) Validate(i interface{}) error {
-	if err := cv.validate.Struct(i); err != nil {
-		strErr := ""
-
-		for _, err := range err.(validator.ValidationErrors) {
-			strErr += fmt.Sprintf("%s is %s,", err.Field(), err.Tag())
-		}
-
-		errObj := httpError.NewBadRequest()
-		errObj.Message = strErr
-
-		return echo.NewHTTPError(errObj.Code, errObj)
-	}
-	return nil
-}
 
 func main() {
 	// Setup DB
@@ -44,11 +22,15 @@ func main() {
 
 	e.Use(middleware.CORS())
 
-	e.Validator = &CustomValidator{validate: validator.New()}
+	// Register validator
+	echoCustom := utils.NewEchoCustom()
+	e.Validator = echoCustom
 
+	// Instance of handler
 	farmHTTP := httpHandlerFarm.NewFarmHandler()
 	statisticHTTP := httpHandlerStatistic.NewStatisticHandler()
 
+	// Mount http handler group
 	farmHTTP.MountFarm(e.Group("/v1/farm", customMiddleware.RecordApi))
 	farmHTTP.MountPond(e.Group("/v1/pond", customMiddleware.RecordApi))
 	statisticHTTP.MountStatistic(e.Group("/v1/statistic"))
