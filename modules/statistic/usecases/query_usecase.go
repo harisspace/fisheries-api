@@ -31,12 +31,23 @@ func (q *StatisticQueryUsecasePostgres) GetStatisticByUserAgent(ctx context.Cont
 
 	queryRes := <-q.statisticQueryPostgres.FindManyByPayload(ctx, map[string]interface{}{"user_agent": userAgent}, page, quantity, order)
 	if queryRes.Error != nil {
-		// Update count
 		errObj := httpError.NewNotFound()
 		errObj.Message = "User-agent not found"
 		result.Error = errObj
 		return result
 	}
+
+	statisticResponse := make([]map[string]model.Statistic, 0, 10)
+	for _, v := range queryRes.Data.([]model.Statistic) {
+		strMethodPath := v.Method + " " + v.RequestPath
+		newVal := map[string]model.Statistic{
+			strMethodPath: v,
+		}
+
+		statisticResponse = append(statisticResponse, newVal)
+	}
+
+	queryRes.Data = statisticResponse
 
 	result = queryRes
 	return result
