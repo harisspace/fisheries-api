@@ -31,6 +31,7 @@ func (q *PondPostgres) FindOne(ctx context.Context, payload map[string]interface
 		result := q.db.Preload("Farm").Model(&pond).Where(payload).First(&pond)
 		if result.Error != nil {
 			output <- utils.Result{Error: result}
+			return
 		}
 
 		output <- utils.Result{Data: pond}
@@ -52,6 +53,7 @@ func (q *PondPostgres) FindMany(ctx context.Context, page int, quantity int, ord
 		result := q.db.Limit(quantity).Offset(offset).Order(fmt.Sprintf("%s %s", "created_at", order)).Where("is_deleted=?", false).Find(&pond)
 		if result.Error != nil || result.RowsAffected == 0 {
 			output <- utils.PaginationResult{Error: result}
+			return
 		}
 		countRows := <-q.CountData(ctx, &model.Pond{})
 

@@ -27,6 +27,7 @@ func (c *FarmCommandPostgres) InsertOne(ctx context.Context, farm *model.Farm) <
 		result := c.db.Create(&farm)
 		if result.Error != nil {
 			output <- utils.Result{Error: result.Error}
+			return
 		}
 		output <- utils.Result{Data: farm}
 	}()
@@ -45,6 +46,7 @@ func (c *FarmCommandPostgres) UpdateOne(ctx context.Context, payload map[string]
 		result := c.db.Model(&farm).Where(payload).Updates(value)
 		if result.Error != nil {
 			output <- utils.Result{Error: result.Error}
+			return
 		}
 		output <- utils.Result{Data: farm}
 	}()

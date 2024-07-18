@@ -31,6 +31,7 @@ func (q *StatisticPostgres) FindOne(ctx context.Context, payload map[string]inte
 		result := q.db.Model(&statistic).Where(payload).First(&statistic)
 		if result.Error != nil {
 			output <- utils.Result{Error: result}
+			return
 		}
 
 		output <- utils.Result{Data: statistic}
@@ -52,6 +53,7 @@ func (q *StatisticPostgres) FindManyByPayload(ctx context.Context, payload map[s
 		result := q.db.Limit(quantity).Offset(offset).Order(fmt.Sprintf("%s %s", "created_at", order)).Where(payload).Find(&statistic)
 		if result.Error != nil || result.RowsAffected == 0 {
 			output <- utils.PaginationResult{Error: result}
+			return
 		}
 		countRows := <-q.CountData(ctx, &model.Statistic{})
 

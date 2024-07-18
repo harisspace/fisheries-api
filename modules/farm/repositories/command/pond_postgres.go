@@ -27,6 +27,7 @@ func (c *PondCommandPostgres) InsertOne(ctx context.Context, data *model.Pond) <
 		result := c.db.Create(&data)
 		if result.Error != nil {
 			output <- utils.Result{Error: result.Error}
+			return
 		}
 		output <- utils.Result{Data: data}
 	}()
@@ -45,6 +46,7 @@ func (c *PondCommandPostgres) UpdateOne(ctx context.Context, payload map[string]
 		result := c.db.Model(&pond).Where(payload).Updates(value)
 		if result.Error != nil {
 			output <- utils.Result{Error: result.Error}
+			return
 		}
 		output <- utils.Result{Data: pond}
 	}()

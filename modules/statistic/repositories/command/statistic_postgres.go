@@ -27,6 +27,7 @@ func (c *StatisticCommandPostgres) InsertOne(ctx context.Context, statistic *mod
 		result := c.db.Create(&statistic)
 		if result.Error != nil {
 			output <- utils.Result{Error: result.Error}
+			return
 		}
 		output <- utils.Result{Data: statistic}
 	}()
@@ -45,6 +46,7 @@ func (c *StatisticCommandPostgres) UpdateOne(ctx context.Context, payload map[st
 		result := c.db.Model(&statistic).Where(payload).Updates(value)
 		if result.Error != nil {
 			output <- utils.Result{Error: result.Error}
+			return
 		}
 		output <- utils.Result{Data: statistic}
 	}()
