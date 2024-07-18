@@ -39,7 +39,7 @@ Default http port running is 3000, you can change the port number in `.env` file
 **This endpoint use authorization type Basic Auth with *username = delos password = 2024***
 
     - Farm
-        - /api/v1/farm --> [GET] Get List of Farm
+        - /v1/farm --> [GET] Get List of Farm
             - query
                 - page [Number, OPTIONAL]
                 - quantity [Number, Optional]
@@ -47,25 +47,25 @@ Default http port running is 3000, you can change the port number in `.env` file
             - expected response
                 - [200] Return list of Farm
                 - [404] If there is no record found
-        - /api/v1/farm --> [POST]
+        - /v1/farm --> [POST]
             - body (JSON)
                 - name [String, REQUIRED]
             - expected response
                 - [200] Return the new created farm
                 - [409] If name already exist
-        - /api/v1/farm/:id --> [GET]
+        - /v1/farm/:id --> [GET]
             - param
                 - id --> Farm id
             - expected response
                 - [200] Return farm data
                 - [404] Farm data not found
-        - /api/v1/farm --> [PUT]
+        - /v1/farm --> [PUT]
             - body (JSON)
                 - farm_id [String, OPTIONAL]
                 - name [String, REQUIRED]
             - expected response
                 - [200] Updated or created
-        - /api/v1/farm/:id [DELETE]
+        - /v1/farm/:id [DELETE]
             - param
                 - id --> Farm id
             - expected response
@@ -73,7 +73,7 @@ Default http port running is 3000, you can change the port number in `.env` file
                 - [404] Farm not found
     
     - Pond
-        - /api/v1/pond --> [GET] Get List of Pond
+        - /v1/pond --> [GET] Get List of Pond
             - query
                 - page [Number, OPTIONAL]
                 - quantity [Number, Optional]
@@ -81,26 +81,26 @@ Default http port running is 3000, you can change the port number in `.env` file
             - expected response
                 - [200] Return list of pond
                 - [404] If there is no record found
-        - /api/v1/pond --> [POST]
+        - /v1/pond --> [POST]
             - body (JSON)
                 - name [String, REQUIRED]
             - expected response
                 - [200] Return the new created pond
                 - [409] If name already exist or farmId doesn't exist
-        - /api/v1/pond/:id --> [GET]
+        - /v1/pond/:id --> [GET]
             - param
                 - id --> Pond id
             - expected response
                 - [200] Return pond data
                 - [404] Pond data not found
-        - /api/v1/pond --> [PUT]
+        - /v1/pond --> [PUT]
             - body (JSON)
                 - pond_id [String, REQUIRED]
                 - name [String, REQUIRED]
                 - farm_id [String, REQUIRED]
             - expected response
                 - [200] Updated or created
-        - /api/v1/pond/:id [DELETE]
+        - /v1/pond/:id [DELETE]
             - param
                 - id --> Pond id
             - expected response
@@ -108,7 +108,7 @@ Default http port running is 3000, you can change the port number in `.env` file
                 - [404] Pond not found
     
     - Statistic
-        - /api/v1/statistic/:id --> [GET]
+        - /v1/statistic/:id --> [GET]
             - param
                 - id --> User-agent
             - expected response
